@@ -1,11 +1,11 @@
 <?php
 
-define ("DB_HOST", "livingroom-winterthur.ch"); 
-define ("DB_BENUTZER", "livingro_depot");
-define ("DB_PASSWORT", "JBW&GD>p9XjAY-GE");
-define ("DB_NAME", "livingro_depot");
+define ("DB_HOST", "localhost"); 
+define ("DB_BENUTZER", "lroot");
+define ("DB_PASSWORT", "root");
+define ("DB_NAME", "database");
 
 define ("DEBUG", true);
 define ("URL", 'http://localhost:8888/');
-define ("PATH", 'depot/');
+define ("PATH", 'datian-framework/');
 ?>

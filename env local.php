@@ -7,5 +7,5 @@ define ("DB_NAME", "depot");
 
 define ("DEBUG", true);
 define ("URL", 'http://localhost:8888/');
-define ("PATH", 'depot/');
+define ("PATH", 'datian-framework/');
 ?>

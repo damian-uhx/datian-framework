@@ -1,4 +1,5 @@
 <?php
+echo $_SERVER['REQUEST_URI'];
 ob_start();
 $microtime=microtime(true);
 error_reporting(E_ALL);
@@ -20,7 +21,7 @@ if (isset ($path[1])){ //if there are any parameters ...
     $paras = explode('/', $path[1]); //...transform them to an array...
 }
 else{
-    $paras = []; //...or else just set an empty array
+    $paras = []; //...or else set an empty array
 }
 $path = $path[0];
 
@@ -40,6 +41,14 @@ $data = json_decode(file_get_contents("php://input"), TRUE);
 // file_exists ( string $filename ) : bool
 // Check file, check folder, Pass rest to function
 
-include_once 'routes/'.$path.'.php';
+echo 'pathcomeshere';
+
+if ($path!=='')
+{
+    include_once 'routes/'.$path.'.php';
+}
+else {
+    include_once 'routes/index.php';
+}
 terminate();
 ?>
