@@ -7,4 +7,5 @@ define ("DB_NAME", "database");
 
 define ("DEBUG", true);
 define ("PATH", 'datian-framework/');
+
 ?>
