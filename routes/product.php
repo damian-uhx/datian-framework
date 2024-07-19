@@ -1,10 +1,22 @@
 <?php
 
-serve(
+/*serve(
     [
         'product'=>[
             'name'=>[], 
-            'price'=>[]
+            'price'=>[],
+            'category'=>[
+                'id'=>[]
+            ]
+        ]
+    ]
+);*/
+
+serve(
+    [
+        'product' => ['all', 'category'=>[
+                'name'=>[]
+            ]
         ]
     ]
 );
