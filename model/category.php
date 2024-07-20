@@ -1,6 +1,6 @@
 <?php
 $m['category']=[ 
     'name' => ['word'],
-    'category' => ['rkey', 'table'=>'product', 'key'=>'category'],
+    'product' => ['rkey', 'table'=>'product', 'key'=>'category'],
 ];
 ?>

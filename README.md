@@ -108,7 +108,7 @@ The category table looks like this:
 $m['category']=[ 
     'id' => ['id'],
     'name' => ['word'],
-    'category' => ['rkey', 'table'=>'product', 'key'=>'category'],
+    'product' => ['rkey', 'table'=>'product', 'key'=>'category'],
 ];
 ```
 
@@ -128,6 +128,15 @@ http://url-to-the-app/service/alternate
 This will update any variable types that have changed and add variables that are not there yet. It will NOT delete any variables. This has to be done manually.
 
 Before this step: Make sure you have a backup of your database in the case something goes wrong.
+
+## Adding custom SQL to your table definitions
+
+You can add any custom SQL syntax that is executed after the table is created in the $append array. Add any string to the array `$append['tablename']``
+
+This example will add an unique constraint to the table:
+```
+$append['tablename'][]='ADD CONSTRAINT UC_UserDaySubject UNIQUE (user_id,day,subject)'
+```
 
 # Defining the routes
 
@@ -196,17 +205,128 @@ Examples:
 Create a new product:
 POST: `{"name":"testname","price":"77","category":{"id":"1"}}`
 
-GET: Will return all instances of product. If you provide a parameter like `//44` only the instance with id 42 is returned.
+GET: Will return all instances of product. If you provide a parameter like `//42` only the instance with id 42 is returned.
 
 DELETE: `{"id":"1"}`
 
 
-Now lets make a route that returns all categories with their products
+Now lets make a route that returns all categories with their products. 
 
+In create a new file called 'category.php' in routes/ and put the following PHP code in it:
 
+```
+serve(
+    [
+        'category' => ['all', 'product'=>['all']]
+    ], ['GET']
+);
+```
+
+Now you should be able to retrieve any data from the database.
+
+## Adding custom SQL syntax to your query
+
+### Adding a where clause
+
+You can add a SQL where condition to an array with the key "_where". `'_where'=>['price > 100']`.
+
+If you want only retrieve products that cost more than 100 you add this to your array:
+
+```
+serve(
+    [
+        'category' => [
+            '_where'=>['price > 100'], 
+            'all', 
+            'product'=>['all']]
+    ], ['GET']
+);
+```
+
+### Appending any further data manipulation
+
+Grouping, sorting etc. can be added at the end of a SQL query. Datian provides the possibility to define an "_append" array that is appended to the SQL query.
+
+In this example products are sorted by its price:
+
+```
+serve(
+    [
+        'category' => [
+            '_where'=>['price > 100'], 
+            '_append'=>['ORDER BY price ASC']
+            'all', 
+            'product'=>['all']]
+    ], ['GET']
+);
+```
 
 # Data manipulation
 
 ## Snippets
 
-## Snippets on type or database level.
+Snippets are the core concept of executing any operations on the data. Snippets can be used to transform or validate data. Snippets are small code blocks that can be used within any query shown in the previous chapter. 
+
+In the folder snippets all snippets are stored, you can organize them in subfolders if you like. You can include them in your query by adding them to your array. 
+
+## How to apply snippets
+
+The serve function provides an array that will read data from the database. The empty arrays can be filled with snippets. The key defines the location of the code snippet file and the value is passed to that code.
+
+I created a small script that adds a number to the original value and named the file 'add.php' and put it in the snippets/transform/ folder.
+
+To add 100 to a value I write `'transform/add'=>100` inside the array of the variable that has to be transformed. The full code looks like this:
+
+```
+serve(
+    [
+        'product' => ['all', 'price'=>['transform/add'=>100], 'category'=>[
+                'name'=>[]
+            ]
+        ]
+    ]
+);
+```
+
+## Explained by an example
+
+When data is retrieved from or written to sql database after reading or before writing a function (line 191 in datian-core/helper.php) is executed. It includes the code snippet and provides some variables to use within this code: 
+
+- $value: a reference to the value that is returned. If you want to change the value overwrite $value
+- $array: a reference to the whole entry (all values).
+- $args: the arguments provided in the query. In the sample above `['transform/add'=>100]` $args is 100. You can also provide arrays as argument if you need more than one value. 
+
+The add.php file consists of only one line of code:
+
+```
+$value = $value+$args;
+```
+
+## Snippets on type or database level
+
+Snippets can not only be included for a value but also for
+
+### 1. The full entity
+
+In the serve function you can add a "_snippet" entry in the array. The snippets are executed for the whole entity, not just one value. This is a good way to create a new variable computed from other variables. If you use snippets like this $value becomes the whole entry while $data is the parent's entry.
+
+### 2. For a datatype
+
+Each datatype defined in settings/database can have snippets defined that are called everytime this datatype is read or written. There are two arrays for this: $in and $out. The snippets defined in $in are called everytime this datatype is written to the database. The snippets defined in $out are called everytime the datatype is read for from the database.
+
+This example checks for all values with datatype 'int' if the value is an integer:
+
+```
+$in=[
+    'int' => ['validate/type'=>'integer',]
+]
+```
+
+### 3. Predefined snippets
+
+TBD
+
+### 4. For a specific property in a table
+
+TBD
+
