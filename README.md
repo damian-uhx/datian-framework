@@ -147,6 +147,42 @@ Routes are defined in the /routes folder. Every call of the framework will be fo
 The string after a double slash ('//') is treaded as parameters and does not affect the route. 
 /service/test//first/second/thirdparameter will call the test.php file in routes and set the $paras array to ['first', 'second', 'thirdparameter'].
 
+## Sending data
+
+Data can be passed as JSON data. In plain text it looks like this:
+
+{
+  "name": "testname",
+  "price": "77"
+}
+
+## Receiving data
+
+Data is returned as a JSON object. 
+
+A global array $return is created at the beginning of every request. 
+
+`$return = ['message'=>'', 'warning'=>'', 'debug'=>[], 'data'=>[], 'log'=>[] ];`
+
+This array can be manipulated and is automatically returned as JSON. 
+
+Debug is only available if DEBUG is true in the env.php file. It holds information about certain events to better understand what happened behind the scenes. You can use the function "inf" anywhere in your code to provide you with additional information.
+
+`function inf($value, $key='')`
+
+$value can be any primitive datatype or array.
+$key is an optional key-name of the value when it is returned as JSON. 
+
+
+
+If you do not want to return data as a JSON but do something else like displaying a HTML page you can wrap your code in a file in routes/ like this. 
+
+```
+ob_end_clean();
+//your page code here
+exit;
+```
+
 ## Reading and writing data
 
 There is an all in one function to read data from the database and return the value: serve.
