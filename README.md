@@ -19,6 +19,7 @@ Adjust the value for PATH. PATH is the path to the root directory. If the app ru
 DEBUG defines if data for troubleshooting is returned or not. Leave this value "true" unless in production mode.
 
 
+
 ## Adjust the .htdocs file
 
 On this line:
@@ -34,6 +35,9 @@ Replace the "datian-framework/" with the value from PATH in the env.php file.
 
 To check if everything is set up correctly you can call:
 http://url-to-the-app/service/test
+
+
+
 
 
 # Setting up the database
@@ -83,6 +87,7 @@ $s=[
 Now we have defined what variable types exist and how the are implemented in the SQL table.
 
 
+
 ## Define the tables in model
 
 Now we can define the tables defined on these variable types. 
@@ -117,6 +122,7 @@ Category is a 'rkey' which stands for reverse key and is a crucial concept of th
 The types 'fkey' and 'rkey' both have a 'table' value that defines to what table this relation points to and a 'key' value to define what variable in the foreign table defines the relation.
 
 
+
 ## Setting up the database
 
 Once everything is defined the database can be automatically set up by calling this route:
@@ -129,6 +135,8 @@ This will update any variable types that have changed and add variables that are
 
 Before this step: Make sure you have a backup of your database in the case something goes wrong.
 
+
+
 ## Adding custom SQL to your table definitions
 
 You can add any custom SQL syntax that is executed after the table is created in the $append array. Add any string to the array `$append['tablename']``
@@ -137,6 +145,10 @@ This example will add an unique constraint to the table:
 ```
 $append['tablename'][]='ADD CONSTRAINT UC_UserDaySubject UNIQUE (user_id,day,subject)'
 ```
+
+
+
+
 
 # Defining the routes
 
@@ -147,6 +159,8 @@ Routes are defined in the /routes folder. Every call of the framework will be fo
 The string after a double slash ('//') is treaded as parameters and does not affect the route. 
 /service/test//first/second/thirdparameter will call the test.php file in routes and set the $paras array to ['first', 'second', 'thirdparameter'].
 
+
+
 ## Sending data
 
 Data can be passed as JSON data. In plain text it looks like this:
@@ -155,6 +169,8 @@ Data can be passed as JSON data. In plain text it looks like this:
   "name": "testname",
   "price": "77"
 }
+
+
 
 ## Receiving data
 
@@ -182,6 +198,8 @@ ob_end_clean();
 //your page code here
 exit;
 ```
+
+
 
 ## Reading and writing data
 
@@ -260,6 +278,8 @@ serve(
 
 Now you should be able to retrieve any data from the database.
 
+
+
 ## Adding custom SQL syntax to your query
 
 ### Adding a where clause
@@ -297,6 +317,10 @@ serve(
 );
 ```
 
+
+
+
+
 # Data manipulation
 
 ## Snippets
@@ -304,6 +328,8 @@ serve(
 Snippets are the core concept of executing any operations on the data. Snippets can be used to transform or validate data. Snippets are small code blocks that can be used within any query shown in the previous chapter. 
 
 In the folder snippets all snippets are stored, you can organize them in subfolders if you like. You can include them in your query by adding them to your array. 
+
+
 
 ## How to apply snippets
 
@@ -324,6 +350,8 @@ serve(
 );
 ```
 
+
+
 ## Explained by an example
 
 When data is retrieved from or written to sql database after reading or before writing a function (line 191 in datian-core/helper.php) is executed. It includes the code snippet and provides some variables to use within this code: 
@@ -337,6 +365,8 @@ The add.php file consists of only one line of code:
 ```
 $value = $value+$args;
 ```
+
+
 
 ## Snippets on type or database level
 
