@@ -299,7 +299,7 @@ serve(
 );
 ```
 
-### Appending any further data manipulation
+### Appending any SQL syntax
 
 Grouping, sorting etc. can be added at the end of a SQL query. Datian provides the possibility to define an "_append" array that is appended to the SQL query.
 
