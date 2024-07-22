@@ -152,7 +152,7 @@ $append['tablename'][]='ADD CONSTRAINT UC_UserDaySubject UNIQUE (user_id,day,sub
 
 # Defining the routes
 
-## Calling a route:
+## Calling a route
 
 Routes are defined in the /routes folder. Every call of the framework will be forwarded to the routes folder. We already saw this when accessing /service/migrate or /service/test. In those cases the file migrate.php or test.php in the folder service is called. You can make any folder structure to organize your routes.
 
